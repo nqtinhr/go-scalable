@@ -12,7 +12,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func Login(db *gorm.DB) gin.HandlerFunc {
+func Login(db *gorm.DB, tokenProvider tokenprovider.Provider) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var loginUserData model.UserLogin
 
@@ -20,7 +20,6 @@ func Login(db *gorm.DB) gin.HandlerFunc {
 			panic(common.ErrInvalidRequest(err))
 		}
 
-		tokenProvider := tokenprovider.NewTokenJWTProvider("jwt", "syshero.io")
 		store := storage.NewSQLStore(db)
 		md5 := common.NewMd5Hash()
 		business := biz.NewLoginBusiness(store, tokenProvider, md5, 60*60*24*30)

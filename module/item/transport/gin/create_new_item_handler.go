@@ -22,6 +22,9 @@ func CreateItem(db *gorm.DB) func(*gin.Context) {
 			return
 		}
 
+		requester := c.MustGet(common.CurrentUser).(common.Requester)
+		itemData.UserId = requester.GetUserId()
+
 		// Dependence Injection
 		store := storage.NewSQLStore(db)
 		business := biz.NewCreateItemBiz(store)

@@ -26,7 +26,7 @@ func (biz *deleteItemBiz) DeleteItemById(ctx context.Context, id int) error {
 		return common.ErrCannotGetEntity(model.EntityName, err)
 	}
 
-	if data.Status == "Deleted" {
+	if data.Status == model.ItemStatusDeleted {
 		return model.ErrItemIsDeleted
 	}
 	if err := biz.store.DeleteItem(ctx, map[string]interface{}{"id": id}); err != nil {

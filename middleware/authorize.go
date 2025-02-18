@@ -37,7 +37,7 @@ func extractTokenFromHeaderString(s string) (string, error) {
 // 1. Get token from header
 // 2. Validate token and parse to payload
 // 3. From the token payload, we use user_id to find from DB
-func RequiredAuth(authStore AuthenStore, tokenProvider tokenprovider.Provider) gin.HandlerFunc {
+func RequiredAuth(authStore AuthenStore, tokenProvider tokenprovider.Provider) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		// Lấy token từ header
 		token, err := extractTokenFromHeaderString(c.GetHeader("Authorization"))
@@ -61,7 +61,6 @@ func RequiredAuth(authStore AuthenStore, tokenProvider tokenprovider.Provider) g
 			panic(common.ErrNoPermission(errors.New("user has been deleted or banned")))
 		}
 
-		user.Mask(common.DbTypeUser)
 		c.Set(common.CurrentUser, user)
 		c.Next()
 	}

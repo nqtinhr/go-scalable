@@ -6,7 +6,7 @@ import (
 )
 
 type Provider interface {
-	GenrateToken(data TokenPayload, expire int) (Token, error)
+	Generate(data TokenPayload, expire int) (Token, error)
 	Validate(token string) (TokenPayload, error)
 	SecretKey() string
 }

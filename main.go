@@ -4,6 +4,7 @@ import (
 	"log"
 	"todololist/middleware"
 	ginitem "todololist/module/item/transport/gin"
+	ginuser "todololist/module/user/transport/gin"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -40,6 +41,9 @@ func main() {
 
 	v1 := r.Group("v1")
 	{
+		v1.POST("/login", ginuser.Login(db))
+		v1.POST("/register", ginuser.Register(db))
+
 		items := v1.Group("/items")
 		{
 			items.POST("/", ginitem.CreateItem(db))
